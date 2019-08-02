@@ -15,12 +15,12 @@ async def on_ready():
 
 @client.event
 async def on_member_join(member):
-	print('{} зашёл на сервер'.format(member))
+	print(f'{member} зашёл на сервер')
 
 
 @client.event
 async def on_member_remove(member):
-	print('{} вышел в окно'.format(member))
+	print(f'{member} вышел в окно')
 
 
 @client.command()
@@ -32,8 +32,6 @@ async def hello(ctx):
 async def postpic(ctx):
 	with open(f'pics/{choice(filelist)}', 'rb') as picture:
 		file = discord.File(picture)
-
 		await ctx.send(file=file)
-
 
 client.run(str(os.environ.get('BOT_TOKEN')))
