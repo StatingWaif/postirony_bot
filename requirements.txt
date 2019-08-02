@@ -1,0 +1,4 @@
+discord
+random
+os
+pip
