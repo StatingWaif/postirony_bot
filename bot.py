@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
 from random import choice
-from os import listdir
+import os
 
-filelist = listdir('pics')
+filelist = os.listdir('pics')
 
 client = commands.Bot(command_prefix = '!')
 
