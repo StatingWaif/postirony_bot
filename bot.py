@@ -12,7 +12,7 @@ client = commands.Bot(command_prefix = '!')
 @client.event
 async def on_ready():
 	print('bot is ready')
-	await client.change_presence(activity=discord.Game('!help для списка команд   а что смотрим( ͡° ͜ʖ ͡°)'))
+	await client.change_presence(activity=discord.Game('а что смотрим( ͡° ͜ʖ ͡°) !help для списка команд'))
 
 @client.event
 async def on_member_join(member):
