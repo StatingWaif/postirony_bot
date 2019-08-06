@@ -45,7 +45,8 @@ client = commands.Bot(command_prefix = '!')
 @client.event
 async def on_ready():
 	print('bot is ready')
-	await client.change_presence(activity=discord.Game('( ͡° ͜ʖ ͡°) !help для команд'))
+	bot_activity = discord.Activity(name='своих родителей( ͡° ͜ʖ ͡°) !help для списка команд', type=discord.ActivityType.listening)
+	await client.change_presence(activity=bot_activity)
 
 @client.event
 async def on_member_join(member):
