@@ -60,12 +60,14 @@ async def on_member_remove(member):
 
 @client.command(brief='Мягко указывает на то, что ты немного ошибаешься при приветствии', description='Тебе совсем нечем заняться? Просто используй команду. Зачем смотреть её полное описание... Дурак ржавый..')
 async def hello(ctx):
-	await ctx.send('ты што идиот??? Ты совсем жизнью контуженный? Зачем здороваться с роботом?')
+	async with ctx.typing():
+		await ctx.send('ты што идиот??? Ты совсем жизнью контуженный? Зачем здороваться с роботом?')
 
 
 @client.command(aliases=['постироничная_картинка'], brief='посылает постироничную картинку', description='Ты тупой? Зачем тебе полное описание? Ты не понял, что было написано в команде !help? Ты идиот? Я тебя спрашиваю')
 async def postpic(ctx):
-	await pickingVkPic(ctx)
+	async with ctx.typing():
+		await pickingVkPic(ctx)
 				
 	
 	
