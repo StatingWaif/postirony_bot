@@ -7,7 +7,6 @@ import aiohttp
 from io import BytesIO
 from math import ceil
 
-
 async def pickingVkPic(ctx):
 	session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
 	vk_api = vk.API(session, v='5.0')
@@ -19,9 +18,6 @@ async def pickingVkPic(ctx):
 	num_of_photos = photos['count']
 
 	pic = randint(0, num_of_photos - 1)
-
-
-
 
 	if pic > 1000:
 		offset = pic - (pic % 1000)
