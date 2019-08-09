@@ -19,7 +19,7 @@ async def pickingVkPic(ctx):
 
 	pic = randint(0, num_of_photos - 1)
 
-	if pic > 1000:
+	if pic > 999:
 		offset = pic - (pic % 1000)
 		photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
 
