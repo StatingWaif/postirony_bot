@@ -5,7 +5,6 @@ import os
 import vk
 import aiohttp
 from io import BytesIO
-from math import ceil
 
 async def pickingVkPic(ctx):
 	session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
@@ -32,15 +31,9 @@ async def pickingVkPic(ctx):
 			if resp.status == 200:
 				buffer = BytesIO(await resp.read())
 				bufferfile = discord.File(buffer, filename='pic.jpg')
-				await ctx.send(file=bufferfile)
-
-
-	
+				await ctx.send(file=bufferfile)	
 
 client = commands.Bot(command_prefix = '!')
-
-
-
 
 @client.event
 async def on_ready():
@@ -67,10 +60,6 @@ async def hello(ctx):
 @client.command(aliases=['постироничная_картинка'], brief='посылает постироничную картинку', description='Ты тупой? Зачем тебе полное описание? Ты не понял, что было написано в команде !help? Ты идиот? Я тебя спрашиваю')
 async def postpic(ctx):
 	async with ctx.typing():
-		await pickingVkPic(ctx)
-				
-	
-	
-	
+		await pickingVkPic(ctx)	
 
 client.run(str(os.environ.get('BOT_TOKEN')))
