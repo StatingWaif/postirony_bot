@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from random import choice, randint
+from random import randint
 import os
 import vk
 import aiohttp
