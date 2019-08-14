@@ -6,11 +6,10 @@ import vk
 import aiohttp
 from io import BytesIO
 
-async def pickingVkPic(ctx):
+async def pickingVkPic(ctx, url):
 	session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
 	vk_api = vk.API(session, v='5.0')
-
-	url = 'https://vk.com/album-162305728_00'
+	
 	owner_id = url.split('/')[-1].replace('album', '').replace('_00', '') 
 
 	photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1)
@@ -60,6 +59,11 @@ async def hello(ctx):
 @client.command(aliases=['постироничная_картинка'], brief='посылает постироничную картинку', description='Ты тупой? Зачем тебе полное описание? Ты не понял, что было написано в команде !help? Ты идиот? Я тебя спрашиваю')
 async def postpic(ctx):
 	async with ctx.typing():
-		await pickingVkPic(ctx)	
+		await pickingVkPic(ctx, 'https://vk.com/album-162305728_00')	
+		
+@client.command(aliases=['папич', 'papichpic'], brief='посылает мем с папичем', descripiton='Полное описание для малолетних дебилов')
+async def papapic(ctx):
+    async with ctx.typing():
+        await pickingVkPic(ctx, 'https://vk.com/album-181404250_00')
 
 client.run(str(os.environ.get('BOT_TOKEN')))
