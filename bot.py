@@ -58,17 +58,17 @@ async def hello(ctx):
 		await ctx.send('ты што идиот??? Ты совсем жизнью контуженный? Зачем здороваться с роботом?')
 
 
-@client.command(aliases=['постироничная_картинка'], brief='присылает постироничную картинку', description='Ты тупой? Зачем тебе полное описание? Ты не понял, что было написано в команде !help? Ты идиот? Я тебя спрашиваю')
+@client.command(aliases=['постироничная_картинка'], brief='Присылает постироничную картинку', description='Ты тупой? Зачем тебе полное описание? Ты не понял, что было написано в команде !help? Ты идиот? Я тебя спрашиваю')
 async def postpic(ctx):
 	async with ctx.typing():
 		await pickingVkPic(ctx, 'https://vk.com/album-162305728_00')	
 		
-@client.command(aliases=['папич', 'papichpic'], brief='присылает мем с папичем', descripiton='Полное описание для малолетних дебилов')
+@client.command(aliases=['папич', 'papichpic'], brief='Присылает мем с папичем', descripiton='Полное описание для малолетних дебилов')
 async def papapic(ctx):
     async with ctx.typing():
         await pickingVkPic(ctx, 'https://vk.com/album-181404250_00')
 	
-@client.command(brief='присылает полуголую бабищу', description='Присылает картинку с полуголой женщиной')
+@client.command(brief='Присылает полуголую бабищу', description='Присылает картинку с полуголой женщиной')
 async def girlpic(ctx):
     async with ctx.typing():
         await pickingVkPic(ctx, 'https://vk.com/album-43234662_00')
