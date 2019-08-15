@@ -5,6 +5,8 @@ import os
 import vk
 import aiohttp
 from io import BytesIO
+import wikipediaapi
+from bs4 import BeautifulSoup as bs
 
 async def pickingVkPic(ctx, url):
 	session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
@@ -56,14 +58,37 @@ async def hello(ctx):
 		await ctx.send('ты што идиот??? Ты совсем жизнью контуженный? Зачем здороваться с роботом?')
 
 
-@client.command(aliases=['постироничная_картинка'], brief='посылает постироничную картинку', description='Ты тупой? Зачем тебе полное описание? Ты не понял, что было написано в команде !help? Ты идиот? Я тебя спрашиваю')
+@client.command(aliases=['постироничная_картинка'], brief='присылает постироничную картинку', description='Ты тупой? Зачем тебе полное описание? Ты не понял, что было написано в команде !help? Ты идиот? Я тебя спрашиваю')
 async def postpic(ctx):
 	async with ctx.typing():
 		await pickingVkPic(ctx, 'https://vk.com/album-162305728_00')	
 		
-@client.command(aliases=['папич', 'papichpic'], brief='посылает мем с папичем', descripiton='Полное описание для малолетних дебилов')
+@client.command(aliases=['папич', 'papichpic'], brief='присылает мем с папичем', descripiton='Полное описание для малолетних дебилов')
 async def papapic(ctx):
     async with ctx.typing():
         await pickingVkPic(ctx, 'https://vk.com/album-181404250_00')
+	
+@client.command(brief='присылает полуголую бабищу', description='Присылает картинку с полуголой женщиной')
+async def girlpic(ctx):
+    async with ctx.typing():
+        await pickingVkPic(ctx, 'https://vk.com/album-43234662_00')
+
+@client.command(aliases=['что', 'определение'])
+async def what(ctx, *args):
+    wiki_wiki = wikipediaapi.Wikipedia(language='ru', extract_format=wikipediaapi.ExtractFormat.HTML)
+
+    page = ''
+
+    for i in args:
+        page += i + '_'
+
+    page_py = wiki_wiki.page(page)
+    if page_py.exists():
+        soup = bs(page_py.summary, 'lxml')
+            
+        definition = soup.find('p').text
+        await ctx.send(definition)
+    else:
+        await ctx.send('Такой страницы не существует ¯\_(ツ)_/¯')
 
 client.run(str(os.environ.get('BOT_TOKEN')))
