@@ -7,6 +7,7 @@ import aiohttp
 from io import BytesIO
 import wikipediaapi
 from bs4 import BeautifulSoup as bs
+import pyowm
 
 async def pickingVkPic(ctx, url):
 	session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
@@ -91,4 +92,18 @@ async def what(ctx, *args):
     else:
         await ctx.send('Такой страницы не существует ¯\_(ツ)_/¯')
 
+@client.command(aliases=['погода'], brief='Команда + город = погода в этом городе', description='Присылает погоду в заданном городе')
+async def weather(ctx, city):
+    owm = pyowm.OWM(str(os.environ.get('PYOWM_TOKEN')), language='ru')
+    observation = owm.weather_at_place(city)
+    w = observation.get_weather()
+    temp = int(w.get_temperature('celsius')['temp'])
+
+    if int(temp) > 0:
+        temp = '+' + str(temp)
+    status = w.get_detailed_status()
+    windSpeed = w.get_wind()['speed']
+    
+    await ctx.send(f'Место: {city}\nТемпература: {temp}\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
+	
 client.run(str(os.environ.get('BOT_TOKEN')))
