@@ -1,4 +1,6 @@
 discord
 pip
 vk
-
+lxml
+beautifulsoup4
+Wikipedia-API
