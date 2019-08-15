@@ -73,7 +73,7 @@ async def girlpic(ctx):
     async with ctx.typing():
         await pickingVkPic(ctx, 'https://vk.com/album-43234662_00')
 
-@client.command(aliases=['что', 'определение'])
+@client.command(aliases=['что', 'определение'], brief='Команда + слово = определение этого слова', description='Присылает определение заданного слова из википедии')
 async def what(ctx, *args):
     wiki_wiki = wikipediaapi.Wikipedia(language='ru', extract_format=wikipediaapi.ExtractFormat.HTML)
 
