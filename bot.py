@@ -104,6 +104,6 @@ async def weather(ctx, city):
     status = w.get_detailed_status()
     windSpeed = w.get_wind()['speed']
     
-    await ctx.send(f'Место: {city}\nТемпература: {temp}\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
+    await ctx.send(f'Место: {city}\nТемпература: {temp}°\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
 	
 client.run(str(os.environ.get('BOT_TOKEN')))
