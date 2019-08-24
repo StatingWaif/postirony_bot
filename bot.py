@@ -20,13 +20,10 @@ async def pickingVkPic(ctx, url):
 
 	pic = randint(0, num_of_photos - 1)
 
-	if pic > 999:
-		offset = pic - (pic % 1000)
-		photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
+	offset = pic - (pic % 1000)
+	photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
 
-		photo = photos['items'][pic - offset]['sizes'][-1]['src']
-	else:
-		photo = photos['items'][pic]['sizes'][-1]['src']
+	photo = photos['items'][pic - offset]['sizes'][-1]['src']
 
 	async with aiohttp.ClientSession() as session:
 		async with session.get(photo) as resp:
