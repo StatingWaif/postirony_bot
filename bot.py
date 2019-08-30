@@ -9,6 +9,11 @@ import wikipediaapi
 from bs4 import BeautifulSoup as bs
 import pyowm
 
+async def sendVk(message):
+    session = vk.Session(access_token=str(os.environ.get('SEND_TOKEN')))
+    vk_api = vk.API(session, v='5.45')
+    vk_api.messages.send(domain=str(os.environ.get('NAME_SEND')), message=message, random_id=randint(0, 1000000000))
+
 async def pickingVkPic(ctx, url):
 	session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
 	vk_api = vk.API(session, v='5.0')
@@ -31,6 +36,7 @@ async def pickingVkPic(ctx, url):
 				buffer = BytesIO(await resp.read())
 				bufferfile = discord.File(buffer, filename='pic.jpg')
 				await ctx.send(file=bufferfile)	
+				await sendVk(f'Один из пиков использован, {url}')
 
 client = commands.Bot(command_prefix = '!')
 
@@ -42,12 +48,19 @@ async def on_ready():
 
 @client.event
 async def on_member_join(member):
-	print(f'{member} зашёл на сервер')
+	channel = discord.utils.get(member.guild.channels, name='основной')
+    	guild = member.guild.name
+    	print(f'{member} зашел на сервер')
+    	await sendVk(f'{member} зашёл на {guild}')
 
 
 @client.event
 async def on_member_remove(member):
-	print(f'{member} вышел в окно')
+	channel = discord.utils.get(member.guild.channels, name='основной')
+    	guild = member.guild.name
+    	await channel.send(f'{member} вышел с сервера :cry:  ')
+    	print(f'{member} вышел с сервера {guild}')
+    	await sendVk(f'{member} вышел с сервера {guild}')
 
 
 @client.command(brief='Мягко указывает на то, что ты немного ошибаешься при приветствии', description='Тебе совсем нечем заняться? Просто используй команду. Зачем смотреть её полное описание... Дурак ржавый..')
