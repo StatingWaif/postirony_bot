@@ -8,8 +8,6 @@ from io import BytesIO
 import wikipediaapi
 from bs4 import BeautifulSoup as bs
 import pyowm
-import asyncio
-from itertools import cycle
 
 async def sendVk(message):
     session = vk.Session(access_token=str(os.environ.get('SEND_TOKEN')))
@@ -43,25 +41,6 @@ async def pickingVkPic(ctx, url):
 
 client = commands.Bot(command_prefix = '!')
 
-async def changingColours():
-    await client.wait_until_ready()
-    colour = ((255, 0, 0), (255, 75, 0), (255, 125, 0), (255, 175, 0), (255, 255, 0), (130, 255, 0), (0, 255, 0), (0, 255, 130), (0, 255, 255), (0, 130, 255), (0, 0, 255), (130, 0, 255), (255, 0, 255))
-    colours = cycle(colour)
-   
-    while not client.is_closed():
-        current_colour = next(colours)
-
-        for guild in client.guilds:
-            for role in guild.roles:
-                if role.name == 'LGBT':
-                    colour = discord.Colour.from_rgb(current_colour[0], current_colour[1], current_colour[2])
-                    
-                    try:
-                        await role.edit(colour=colour)
-                    except discord.errors.Forbidden:
-                        continue
-
-                    await asyncio.sleep(0.2)
 @client.event
 async def on_ready():
 	print('bot is ready')
@@ -133,5 +112,4 @@ async def weather(ctx, city):
     
     await ctx.send(f'Место: {city}\nТемпература: {temp}°\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
 
-client.loop.create_task(changingColours())
 client.run(str(os.environ.get('BOT_TOKEN')))
