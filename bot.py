@@ -8,6 +8,8 @@ from io import BytesIO
 import wikipediaapi
 from bs4 import BeautifulSoup as bs
 import pyowm
+import asyncio
+from itertools import cycle
 
 async def sendVk(message):
     session = vk.Session(access_token=str(os.environ.get('SEND_TOKEN')))
@@ -15,52 +17,70 @@ async def sendVk(message):
     vk_api.messages.send(domain=str(os.environ.get('NAME_SEND')), message=message, random_id=randint(0, 1000000000))
 
 async def pickingVkPic(ctx, url):
-	session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
-	vk_api = vk.API(session, v='5.0')
-	
-	owner_id = url.split('/')[-1].replace('album', '').replace('_00', '') 
+	async with ctx.typing():
+		session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
+		vk_api = vk.API(session, v='5.0')
 
-	photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1)
-	num_of_photos = photos['count']
+		owner_id = url.split('/')[-1].replace('album', '').replace('_00', '') 
 
-	pic = randint(0, num_of_photos - 1)
+		photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1)
+		num_of_photos = photos['count']
 
-	offset = pic - (pic % 1000)
-	photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
+		pic = randint(0, num_of_photos - 1)
 
-	photo = photos['items'][pic - offset]['sizes'][-1]['src']
+		offset = pic - (pic % 1000)
+		photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
 
-	async with aiohttp.ClientSession() as session:
-		async with session.get(photo) as resp:
-			if resp.status == 200:
-				buffer = BytesIO(await resp.read())
-				bufferfile = discord.File(buffer, filename='pic.jpg')
-				await ctx.send(file=bufferfile)	
-				await sendVk(f'Один из пиков использован, {url}')
+		photo = photos['items'][pic - offset]['sizes'][-1]['src']
+
+		async with aiohttp.ClientSession() as session:
+			async with session.get(photo) as resp:
+				if resp.status == 200:
+					buffer = BytesIO(await resp.read())
+					bufferfile = discord.File(buffer, filename='pic.jpg')
+					await ctx.send(file=bufferfile)	
+					await sendVk(f'Один из пиков использован, {url}')
 
 client = commands.Bot(command_prefix = '!')
 
+async def changingColours():
+    await client.wait_until_ready()
+    colour = ((255, 0, 0), (255, 75, 0), (255, 125, 0), (255, 175, 0), (255, 255, 0), (130, 255, 0), (0, 255, 0), (0, 255, 130), (0, 255, 255), (0, 130, 255), (0, 0, 255), (130, 0, 255), (255, 0, 255))
+    colours = cycle(colour)
+   
+    while not client.is_closed():
+        current_colour = next(colours)
+
+        for guild in client.guilds:
+            for role in guild.roles:
+                if role.name == 'LGBT':
+                    colour = discord.Colour.from_rgb(current_colour[0], current_colour[1], current_colour[2])
+                    
+                    try:
+                        await role.edit(colour=colour)
+                    except discord.errors.Forbidden:
+                        continue
+
+                    await asyncio.sleep(0.2)
 @client.event
 async def on_ready():
 	print('bot is ready')
 	bot_activity = discord.Activity(name='своих родителей( ͡° ͜ʖ ͡°) !help для списка команд', type=discord.ActivityType.listening)
 	await client.change_presence(activity=bot_activity)
+	guilds = client.guilds
+    	await sendVk(f'Кол-во серверов: {len(guilds)}')
 
 @client.event
 async def on_member_join(member):
-	channel = discord.utils.get(member.guild.channels, name='основной')
-    	guild = member.guild.name
     	print(f'{member} зашел на сервер')
-    	await sendVk(f'{member} зашёл на {guild}')
-
+    	
 
 @client.event
 async def on_member_remove(member):
 	channel = discord.utils.get(member.guild.channels, name='основной')
-    	guild = member.guild.name
     	await channel.send(f'{member} вышел с сервера :cry:  ')
-    	print(f'{member} вышел с сервера {guild}')
-    	await sendVk(f'{member} вышел с сервера {guild}')
+    	print(f'{member} вышел с сервера')
+    	
 
 
 @client.command(brief='Мягко указывает на то, что ты немного ошибаешься при приветствии', description='Тебе совсем нечем заняться? Просто используй команду. Зачем смотреть её полное описание... Дурак ржавый..')
@@ -71,18 +91,15 @@ async def hello(ctx):
 
 @client.command(aliases=['постироничная_картинка'], brief='Присылает постироничную картинку', description='Ты тупой? Зачем тебе полное описание? Ты не понял, что было написано в команде !help? Ты идиот? Я тебя спрашиваю')
 async def postpic(ctx):
-	async with ctx.typing():
-		await pickingVkPic(ctx, 'https://vk.com/album-162305728_00')	
+	await pickingVkPic(ctx, 'https://vk.com/album-162305728_00')	
 		
 @client.command(aliases=['папич', 'papichpic'], brief='Присылает мем с папичем', descripiton='Полное описание для малолетних дебилов')
 async def papapic(ctx):
-    async with ctx.typing():
-        await pickingVkPic(ctx, 'https://vk.com/album-181404250_00')
+	await pickingVkPic(ctx, 'https://vk.com/album-181404250_00')
 	
 @client.command(brief='Присылает полуголую бабищу', description='Присылает картинку с полуголой женщиной')
 async def girlpic(ctx):
-    async with ctx.typing():
-        await pickingVkPic(ctx, 'https://vk.com/album-43234662_00')
+	await pickingVkPic(ctx, 'https://vk.com/album-43234662_00')
 
 @client.command(aliases=['что', 'определение'], brief='Команда + слово = определение этого слова', description='Присылает определение заданного слова из википедии')
 async def what(ctx, *args):
@@ -115,5 +132,6 @@ async def weather(ctx, city):
     windSpeed = w.get_wind()['speed']
     
     await ctx.send(f'Место: {city}\nТемпература: {temp}°\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
-	
+
+client.loop.create_task(changingColours())
 client.run(str(os.environ.get('BOT_TOKEN')))
