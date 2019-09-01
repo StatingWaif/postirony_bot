@@ -47,7 +47,7 @@ async def on_ready():
 	bot_activity = discord.Activity(name='своих родителей( ͡° ͜ʖ ͡°) !help для списка команд', type=discord.ActivityType.listening)
 	await client.change_presence(activity=bot_activity)
 	guilds = client.guilds
-    	await sendVk(f'Кол-во серверов: {len(guilds)}')
+	await sendVk(f'Кол-во серверов: {len(guilds)}')
 
 @client.event
 async def on_member_join(member):
@@ -58,7 +58,7 @@ async def on_member_join(member):
 async def on_member_remove(member):
 	channel = discord.utils.get(member.guild.channels, name='основной')
     	await channel.send(f'{member} вышел с сервера :cry:  ')
-    	print(f'{member} вышел с сервера')
+	print(f'{member} вышел с сервера')
     	
 
 
