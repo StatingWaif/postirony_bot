@@ -3,5 +3,5 @@ pip
 vk
 lxml
 beautifulsoup4
-Wikipedia-API
+wikipedia-api
 pyowm
