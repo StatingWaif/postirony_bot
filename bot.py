@@ -10,9 +10,9 @@ from bs4 import BeautifulSoup as bs
 import pyowm
 
 async def sendVk(message):
-    session = vk.Session(access_token=str(os.environ.get('SEND_TOKEN')))
-    vk_api = vk.API(session, v='5.45')
-    vk_api.messages.send(domain=str(os.environ.get('NAME_SEND')), message=message, random_id=randint(0, 1000000000))
+	session = vk.Session(access_token=str(os.environ.get('SEND_TOKEN')))
+	vk_api = vk.API(session, v='5.45')
+	vk_api.messages.send(domain=str(os.environ.get('NAME_SEND')), message=message, random_id=randint(0, 1000000000))
 
 async def pickingVkPic(ctx, url):
 	async with ctx.typing():
@@ -51,13 +51,13 @@ async def on_ready():
 
 @client.event
 async def on_member_join(member):
-    	print(f'{member} зашел на сервер')
+	print(f'{member} зашел на сервер')
     	
 
 @client.event
 async def on_member_remove(member):
 	channel = discord.utils.get(member.guild.channels, name='основной')
-    	await channel.send(f'{member} вышел с сервера :cry:  ')
+	await channel.send(f'{member} вышел с сервера :cry:  ')
 	print(f'{member} вышел с сервера')
     	
 
@@ -82,34 +82,34 @@ async def girlpic(ctx):
 
 @client.command(aliases=['что', 'определение'], brief='Команда + слово = определение этого слова', description='Присылает определение заданного слова из википедии')
 async def what(ctx, *args):
-    wiki_wiki = wikipediaapi.Wikipedia(language='ru', extract_format=wikipediaapi.ExtractFormat.HTML)
+	wiki_wiki = wikipediaapi.Wikipedia(language='ru', extract_format=wikipediaapi.ExtractFormat.HTML)
 
-    page = ''
+	page = ''
 
-    for i in args:
-        page += i + '_'
+	for i in args:
+		page += i + '_'
 
-    page_py = wiki_wiki.page(page)
-    if page_py.exists():
-        soup = bs(page_py.summary, 'lxml')
+	page_py = wiki_wiki.page(page)
+	if page_py.exists():
+		soup = bs(page_py.summary, 'lxml')
             
-        definition = soup.find('p').text
-        await ctx.send(definition)
-    else:
-        await ctx.send('Такой страницы не существует ¯\_(ツ)_/¯')
+		definition = soup.find('p').text
+		await ctx.send(definition)
+	else:
+		await ctx.send('Такой страницы не существует ¯\_(ツ)_/¯')
 
 @client.command(aliases=['погода'], brief='Команда + город = погода в этом городе', description='Присылает погоду в заданном городе')
 async def weather(ctx, city):
-    owm = pyowm.OWM(str(os.environ.get('PYOWM_TOKEN')), language='ru')
-    observation = owm.weather_at_place(city)
-    w = observation.get_weather()
-    temp = int(w.get_temperature('celsius')['temp'])
+	owm = pyowm.OWM(str(os.environ.get('PYOWM_TOKEN')), language='ru')
+	observation = owm.weather_at_place(city)
+	w = observation.get_weather()
+	temp = int(w.get_temperature('celsius')['temp'])
 
-    if int(temp) > 0:
-        temp = '+' + str(temp)
-    status = w.get_detailed_status()
-    windSpeed = w.get_wind()['speed']
+	if int(temp) > 0:
+		temp = '+' + str(temp)
+	status = w.get_detailed_status()
+	windSpeed = w.get_wind()['speed']
     
-    await ctx.send(f'Место: {city}\nТемпература: {temp}°\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
+	await ctx.send(f'Место: {city}\nТемпература: {temp}°\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
 
 client.run(str(os.environ.get('BOT_TOKEN')))
