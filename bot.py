@@ -57,7 +57,7 @@ async def on_member_join(member):
 @client.event
 async def on_member_remove(member):
 	print(f'{member} вышел с сервера')
-	leftMessage = f'{member} вышел с сервера :cry:'
+	leftMessage = f'{member.nick} вышел с сервера :cry:'
 	textChannels = member.guild.text_channels
 	
 	if len(textChannels) == 1:
