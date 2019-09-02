@@ -56,12 +56,20 @@ async def on_member_join(member):
 
 @client.event
 async def on_member_remove(member):
-	channel = discord.utils.get(member.guild.channels, name='основной')
-	await channel.send(f'{member} вышел с сервера :cry:  ')
 	print(f'{member} вышел с сервера')
-    	
-
-
+	leftMessage = f'{member} вышел с сервера :cry:'
+	textChannels = member.guild.text.channels
+	
+	if len(textChannels) == 1:
+		await textChannels[0].send(leftMessage)
+	elif len(textChannels) > 1:
+		channel = discord.utils.get(textChannels, name='основной')
+		if channel == None:
+			channel = discord.utils.get(textChannels, name='general')
+			if channel == None:
+				channel = textChannels[0]
+		await channel.send(leftMessage)
+	
 @client.command(brief='Мягко указывает на то, что ты немного ошибаешься при приветствии', description='Тебе совсем нечем заняться? Просто используй команду. Зачем смотреть её полное описание... Дурак ржавый..')
 async def hello(ctx):
 	async with ctx.typing():
