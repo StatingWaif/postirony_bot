@@ -58,7 +58,7 @@ async def on_member_join(member):
 async def on_member_remove(member):
 	print(f'{member} вышел с сервера')
 	leftMessage = f'{member} вышел с сервера :cry:'
-	textChannels = member.guild.text.channels
+	textChannels = member.guild.text_channels
 	
 	if len(textChannels) == 1:
 		await textChannels[0].send(leftMessage)
