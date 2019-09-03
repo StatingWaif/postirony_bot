@@ -78,7 +78,7 @@ async def on_member_remove(member):
 async def hello(ctx):
 	async with ctx.typing():
 		author = ctx.message.author
-		await ctx.send(f'{author.mention}ты што идиот??? Ты совсем жизнью контуженный? Зачем здороваться с роботом?')
+		await ctx.send(f'{author.mention} ты што идиот??? Ты совсем жизнью контуженный? Зачем здороваться с роботом?')
 
 
 @client.command(aliases=['постироничная_картинка'], brief='Присылает постироничную картинку', description='Ты тупой? Зачем тебе полное описание? Ты не понял, что было написано в команде !help? Ты идиот? Я тебя спрашиваю')
