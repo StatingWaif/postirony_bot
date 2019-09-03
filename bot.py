@@ -60,7 +60,7 @@ async def on_member_remove(member):
 	nameOfMember = member.nick
 	if nameOfMember == None:
 		nameOfMember = member
-	leftMessage = f'{nameOfMember} вышел с сервера :cry:'
+	leftMessage = f'**{nameOfMember} вышел с сервера :cry:**'
 	textChannels = member.guild.text_channels
 	
 	if len(textChannels) == 1:
