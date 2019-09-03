@@ -40,6 +40,7 @@ async def pickingVkPic(ctx, url):
 					await sendVk(f'Один из пиков использован, {url}')
 
 client = commands.Bot(command_prefix = '!')
+client.remove_command('help')
 
 @client.event
 async def on_ready():
@@ -123,4 +124,12 @@ async def weather(ctx, city):
     
 	await ctx.send(f'Место: {city}\nТемпература: {temp}°\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
 
+@client.command()
+async def help(ctx):
+	author = ctx.message.author
+	description='**help** - поздороваться с ботом\n**postpic** - присылает постироничную картинку\n**papapic** - присылает несмешную картинку с папичем\n**girlpic** - присылает картинку с полуголой бабищей\n**weather** + **город** = погода в этом городе\n**what** + **слово** = определение этого слова'
+
+	embed = discord.Embed(title='Список команд для использования бота', description=description, colour=discord.Colour.green())
+	await author.send(embed=embed)
+	
 client.run(str(os.environ.get('BOT_TOKEN')))
