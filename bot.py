@@ -145,7 +145,7 @@ async def girlpic(ctx):
 	await pickingVkPic(ctx, 'https://vk.com/album-43234662_00')
 
 @client.command()
-async def naruto(ctx):
+async def narutopic(ctx):
 	await fromWallVkPics(ctx, 'memoterasu')
 
 @client.command(aliases=['что', 'определение'], brief='Команда + слово = определение этого слова', description='Присылает определение заданного слова из википедии')
