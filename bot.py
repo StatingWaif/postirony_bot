@@ -15,57 +15,55 @@ async def sendVk(message):
 	vk_api.messages.send(domain=str(os.environ.get('NAME_SEND')), message=message, random_id=randint(0, 1000000000))
 	
 async def fromWallVkPics(ctx, domain):
-    async with ctx.typing():
-        listOfPics = []
-        session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
-        vk_api = vk.API(session, v='5.74')
+	async with ctx.typing():
+		listOfPics = []
+		session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
+		vk_api = vk.API(session, v='5.74')
+		
+		num = randint(0, vk_api.wall.get(domain=domain, count=0)['count'] - 1)
 
-        num = randint(0, vk_api.wall.get(domain=domain, count=0)['count'] - 1)
+		pics = vk_api.wall.get(domain=domain, count=100)['items']
 
-        pics = vk_api.wall.get(domain=domain, count=100)['items']
-
-        offset = num - (num % 100)
+		offset = num - (num % 100)
     
-        try:
-            forWhile = pics[num - offset]['attachments'][0]['type']
-        except KeyError:
-            forWhile = pics[num - offset]['copy_history'][0]['attachments'][0]['type']
+		try:
+			forWhile = pics[num - offset]['attachments'][0]['type']
+		except KeyError:
+			forWhile = pics[num - offset]['copy_history'][0]['attachments'][0]['type']
 
-        while pics[num - offset]['marked_as_ads'] != 0 or forWhile != 'photo' or pics == 0:
-            num += 1
-            offset = num - (num % 100)
-            pics = vk_api.wall.get(domain=domain, count=100, offset=offset)['items']
+	while pics[num - offset]['marked_as_ads'] != 0 or forWhile != 'photo' or pics == 0:
+		num += 1
+		offset = num - (num % 100)
+		pics = vk_api.wall.get(domain=domain, count=100, offset=offset)['items']
 
-        text = pics[num - offset]['text']
+	text = pics[num - offset]['text']
 
-        try:
-            attachments = pics[num - offset]['attachments']
+	try:
+		attachments = pics[num - offset]['attachments']
 
-        except KeyError:
-            attachments = pics[num - offset]['copy_history'][0]['attachments']
-            text = pics[num - offset]['copy_history'][0]['text']
+	except KeyError:
+		attachments = pics[num - offset]['copy_history'][0]['attachments']
+		text = pics[num - offset]['copy_history'][0]['text']
     
-    
-    
-        for photo in attachments:
-            if photo['type'] == 'photo':
-                this_photo = photo['photo']
-                photo_id = this_photo['id']
-                owner_id = this_photo['owner_id']
+	for photo in attachments:
+		if photo['type'] == 'photo':
+			this_photo = photo['photo']
+			photo_id = this_photo['id']
+			owner_id = this_photo['owner_id']
 
-                try:
-                    pic = vk_api.photos.get(photo_ids=photo_id, owner_id=owner_id, album_id='wall', photo_sizes=1)['items'][0]['sizes'][-1]['src']
-                except vk.exceptions.VkAPIError:
-                    await asyncio.sleep(1)
-                    pic = vk_api.photos.get(photo_ids=photo_id, owner_id=owner_id, album_id='wall', photo_sizes=1)['items'][0]['sizes'][-1]['src']
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(pic) as resp:
-                        if resp.status == 200:
-                            buffer = BytesIO(await resp.read())
-                            bufferfile = discord.File(buffer, filename='pic.jpg')
-                            listOfPics.append(discord.File(buffer, filename=f'pic{randint(1, 54325)}.jpg'))
+		try:
+			pic = vk_api.photos.get(photo_ids=photo_id, owner_id=owner_id, album_id='wall', photo_sizes=1)['items'][0]['sizes'][-1]['src']
+		except vk.exceptions.VkAPIError:
+			await asyncio.sleep(1)
+			pic = vk_api.photos.get(photo_ids=photo_id, owner_id=owner_id, album_id='wall', photo_sizes=1)['items'][0]['sizes'][-1]['src']
+		async with aiohttp.ClientSession() as session:
+			async with session.get(pic) as resp:
+				if resp.status == 200:
+					buffer = BytesIO(await resp.read())
+					bufferfile = discord.File(buffer, filename='pic.jpg')
+					listOfPics.append(discord.File(buffer, filename=f'pic{randint(1, 54325)}.jpg'))
 
-        await ctx.send(text, files=listOfPics)
+	await ctx.send(text, files=listOfPics)
 
 async def pickingVkPic(ctx, url):
 	async with ctx.typing():
@@ -148,7 +146,7 @@ async def girlpic(ctx):
 
 @client.command()
 async def naruto(ctx):
-    await fromWallVkPics(ctx, 'memoterasu')
+	await fromWallVkPics(ctx, 'memoterasu')
 
 @client.command(aliases=['что', 'определение'], brief='Команда + слово = определение этого слова', description='Присылает определение заданного слова из википедии')
 async def what(ctx, *args):
