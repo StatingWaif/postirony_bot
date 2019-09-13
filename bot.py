@@ -143,6 +143,10 @@ async def papapic(ctx):
 @client.command(brief='Присылает полуголую бабищу', description='Присылает картинку с полуголой женщиной')
 async def girlpic(ctx):
 	await pickingVkPic(ctx, 'https://vk.com/album-43234662_00')
+	
+@client.command()
+async def memepic(ctx):
+	await pickingVkPic(ctx, 'https://vk.com/album-150550417_00')
 
 @client.command()
 async def narutopic(ctx):
@@ -183,7 +187,7 @@ async def weather(ctx, city):
 @client.command()
 async def help(ctx):
 	author = ctx.message.author
-	description='**!hello** - поздороваться с ботом\n**!narutopic** - присылает картинки с наруто**\n!postpic** - присылает постироничную картинку\n**!papapic** - присылает несмешную картинку с папичем\n**!girlpic** - присылает картинку с полуголой бабищей\n**!weather** + **город** = погода в этом городе\n**!what** + **слово** = определение этого слова'
+	description='**!hello** - поздороваться с ботом\n**!narutopic** - присылает картинки с наруто**\n!postpic** - присылает постироничную картинку\n**!papapic** - присылает несмешную картинку с папичем\n**!girlpic** - присылает картинку с полуголой бабищей\n**!memepic** - присылает english meme**\n!weather** + **город** = погода в этом городе\n**!what** + **слово** = определение этого слова'
 
 	embed = discord.Embed(title='Список команд для использования бота', description=description, colour=discord.Colour.green())
 	await author.send(embed=embed)
