@@ -6,6 +6,7 @@ Sends postironic pics in discord(rus)
 Картинки берутся из пабликов вк: memnij, papicheveryday, geekgirls, memoterasu. Возможно, список будет пополняться.
 
 Список команд:
+
 !help - для получения списка команд
 
 !hello - для приветствия бота
