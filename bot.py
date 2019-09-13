@@ -60,8 +60,8 @@ async def fromWallVkPics(ctx, domain):
 			async with session.get(pic) as resp:
 				if resp.status == 200:
 					buffer = BytesIO(await resp.read())
-					bufferfile = discord.File(buffer, filename='pic.jpg')
-					listOfPics.append(discord.File(bufferfile, filename=f'pic{randint(1, 54325)}.jpg'))
+					
+					listOfPics.append(discord.File(buffer, filename=f'pic{randint(1, 54325)}.jpg'))
 
 	await ctx.send(text, files=listOfPics)
 
