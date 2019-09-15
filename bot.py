@@ -69,7 +69,7 @@ async def sendVk(message):
 
 async def changingStatus():
     await client.wait_until_ready()
-    status = (discord.Activity(name='своих родителей( ͡° ͜ʖ ͡°) !help для списка команд', type=discord.ActivityType.listening), discord.Activity(name='в ящик ( ͡° ͜ʖ ͡°) !help для списка команд', type=discord.ActivityType.playing))
+    status = (discord.Activity(name='своих родителей !help для списка команд', type=discord.ActivityType.listening), discord.Activity(name='ящик ( ͡° ͜ʖ ͡°) !help для списка команд', type=discord.ActivityType.playing))
     statuses = cycle(status)
 
     while not client.is_closed():
@@ -109,7 +109,7 @@ client.remove_command('help')
 @client.event
 async def on_ready():
 	print('bot is ready')
-	bot_activity = discord.Activity(name='своих родителей( ͡° ͜ʖ ͡°) !help для списка команд', type=discord.ActivityType.listening)
+	bot_activity = discord.Activity(name='своих родителей !help для списка команд', type=discord.ActivityType.listening)
 	await client.change_presence(activity=bot_activity)
 	guilds = client.guilds
 	await sendVk(f'Кол-во серверов: {len(guilds)}')
