@@ -17,8 +17,6 @@ Sends postironic pics in discord(rus)
 
 !girlpic - для получения картинки с полуголой женщиной
 
-!narutopic - для получения мемеса с наруто
-
 !memepic - для получения english мемеса
 
 !weather + город - для получения погоды в этом городе

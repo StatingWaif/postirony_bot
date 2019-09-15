@@ -14,56 +14,56 @@ async def sendVk(message):
 	vk_api = vk.API(session, v='5.45')
 	vk_api.messages.send(domain=str(os.environ.get('NAME_SEND')), message=message, random_id=randint(0, 1000000000))
 	
-async def fromWallVkPics(ctx, domain):
-	async with ctx.typing():
-		listOfPics = []
-		session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
-		vk_api = vk.API(session, v='5.74')
+#async def fromWallVkPics(ctx, domain):
+#	async with ctx.typing():
+#		listOfPics = []
+#		session = vk.Session(access_token=str(os.environ.get('VK_TOKEN')))
+#		vk_api = vk.API(session, v='5.74')
 		
-		num = randint(0, vk_api.wall.get(domain=domain, count=0)['count'] - 1)
+#		num = randint(0, vk_api.wall.get(domain=domain, count=0)['count'] - 1)
 
-		pics = vk_api.wall.get(domain=domain, count=100)['items']
+#		pics = vk_api.wall.get(domain=domain, count=100)['items']
 
-		offset = num - (num % 100)
-    
-		try:
-			forWhile = pics[num - offset]['attachments'][0]['type']
-		except KeyError:
-			forWhile = pics[num - offset]['copy_history'][0]['attachments'][0]['type']
+#		offset = num - (num % 100)
 
-	while pics[num - offset]['marked_as_ads'] != 0 or forWhile != 'photo' or pics == 0:
-		num += 1
-		offset = num - (num % 100)
-		pics = vk_api.wall.get(domain=domain, count=100, offset=offset)['items']
+#		try:
+#			forWhile = pics[num - offset]['attachments'][0]['type']
+#		except KeyError:
+#			forWhile = pics[num - offset]['copy_history'][0]['attachments'][0]['type']
 
-	text = pics[num - offset]['text']
+#	while pics[num - offset]['marked_as_ads'] != 0 or forWhile != 'photo' or pics == 0:
+#		num += 1
+#		offset = num - (num % 100)
+#		pics = vk_api.wall.get(domain=domain, count=100, offset=offset)['items']
 
-	try:
-		attachments = pics[num - offset]['attachments']
+#	text = pics[num - offset]['text']
 
-	except KeyError:
-		attachments = pics[num - offset]['copy_history'][0]['attachments']
-		text = pics[num - offset]['copy_history'][0]['text']
-    
-	for photo in attachments:
-		if photo['type'] == 'photo':
-			this_photo = photo['photo']
-			photo_id = this_photo['id']
-			owner_id = this_photo['owner_id']
+#	try:
+#		attachments = pics[num - offset]['attachments']
 
-		try:
-			pic = vk_api.photos.get(photo_ids=photo_id, owner_id=owner_id, album_id='wall', photo_sizes=1)['items'][0]['sizes'][-1]['src']
-		except vk.exceptions.VkAPIError:
-			await asyncio.sleep(1)
-			pic = vk_api.photos.get(photo_ids=photo_id, owner_id=owner_id, album_id='wall', photo_sizes=1)['items'][0]['sizes'][-1]['src']
-		async with aiohttp.ClientSession() as session:
-			async with session.get(pic) as resp:
-				if resp.status == 200:
-					buffer = BytesIO(await resp.read())
+#	except KeyError:
+#		attachments = pics[num - offset]['copy_history'][0]['attachments']
+#		text = pics[num - offset]['copy_history'][0]['text']
+
+#	for photo in attachments:
+#		if photo['type'] == 'photo':
+#			this_photo = photo['photo']
+#			photo_id = this_photo['id']
+#			owner_id = this_photo['owner_id']
+
+#		try:
+#			pic = vk_api.photos.get(photo_ids=photo_id, owner_id=owner_id, album_id='wall', photo_sizes=1)['items'][0]['sizes'][-1]['src']
+#		except vk.exceptions.VkAPIError:
+#			await asyncio.sleep(1)
+#			pic = vk_api.photos.get(photo_ids=photo_id, owner_id=owner_id, album_id='wall', photo_sizes=1)['items'][0]['sizes'][-1]['src']
+#		async with aiohttp.ClientSession() as session:
+#			async with session.get(pic) as resp:
+#				if resp.status == 200:
+#					buffer = BytesIO(await resp.read())
 					
-					listOfPics.append(discord.File(buffer, filename=f'pic{randint(1, 54325)}.jpg'))
+#					listOfPics.append(discord.File(buffer, filename=f'pic{randint(1, 54325)}.jpg'))
 
-	await ctx.send(text, files=listOfPics)
+#	await ctx.send(text, files=listOfPics)
 
 async def pickingVkPic(ctx, url):
 	async with ctx.typing():
@@ -104,7 +104,6 @@ async def on_ready():
 @client.event
 async def on_member_join(member):
 	print(f'{member} зашел на сервер')
-    	
 
 @client.event
 async def on_member_remove(member):
@@ -148,9 +147,9 @@ async def girlpic(ctx):
 async def memepic(ctx):
 	await pickingVkPic(ctx, 'https://vk.com/album-150550417_00')
 
-@client.command()
-async def narutopic(ctx):
-	await fromWallVkPics(ctx, 'memoterasu')
+#@client.command()
+#async def narutopic(ctx):
+#	await fromWallVkPics(ctx, 'memoterasu')
 
 @client.command(aliases=['что', 'определение'], brief='Команда + слово = определение этого слова', description='Присылает определение заданного слова из википедии')
 async def what(ctx, *args):
@@ -164,7 +163,7 @@ async def what(ctx, *args):
 	page_py = wiki_wiki.page(page)
 	if page_py.exists():
 		soup = bs(page_py.summary, 'lxml')
-            
+
 		definition = soup.find('p').text
 		await ctx.send(definition)
 	else:
@@ -181,13 +180,13 @@ async def weather(ctx, city):
 		temp = '+' + str(temp)
 	status = w.get_detailed_status()
 	windSpeed = w.get_wind()['speed']
-    
+
 	await ctx.send(f'Место: {city}\nТемпература: {temp}°\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
 
 @client.command()
 async def help(ctx):
 	author = ctx.message.author
-	description='**!hello** - поздороваться с ботом\n**!narutopic** - присылает картинки с наруто**\n!postpic** - присылает постироничную картинку\n**!papapic** - присылает несмешную картинку с папичем\n**!girlpic** - присылает картинку с полуголой бабищей\n**!memepic** - присылает english meme**\n!weather** + **город** = погода в этом городе\n**!what** + **слово** = определение этого слова'
+	description='**!hello** - поздороваться с ботом\n!postpic** - присылает постироничную картинку\n**!papapic** - присылает несмешную картинку с папичем\n**!girlpic** - присылает картинку с полуголой бабищей\n**!memepic** - присылает english meme**\n!weather** + **город** = погода в этом городе\n**!what** + **слово** = определение этого слова'
 
 	embed = discord.Embed(title='Список команд для использования бота', description=description, colour=discord.Colour.green())
 	await author.send(embed=embed)
