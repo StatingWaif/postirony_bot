@@ -8,6 +8,7 @@ from io import BytesIO
 import wikipediaapi
 from bs4 import BeautifulSoup as bs
 import pyowm
+import asyncio
 from itertools import cycle
 
 async def sendVk(message):
