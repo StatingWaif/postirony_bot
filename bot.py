@@ -76,7 +76,7 @@ async def changingStatus():
         current_status = next(statuses)
         await client.change_presence(activity=current_status)
         
-        await asyncio.sleep(12)
+        await asyncio.sleep(60)
 
 async def pickingVkPic(ctx, url):
 	async with ctx.typing():
