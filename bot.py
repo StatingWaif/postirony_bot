@@ -201,7 +201,7 @@ async def weather(ctx, city):
 @client.command()
 async def help(ctx):
 	author = ctx.message.author
-	description='**!hello** - поздороваться с ботом\n!postpic** - присылает постироничную картинку\n**!papapic** - присылает несмешную картинку с папичем\n**!girlpic** - присылает картинку с полуголой бабищей(nsfw)\n**!memepic** - присылает english meme**\n!weather** + **город** = погода в этом городе\n**!what** + **слово** = определение этого слова'
+	description='**!hello** - поздороваться с ботом\n**!postpic** - присылает постироничную картинку\n**!papapic** - присылает несмешную картинку с папичем\n**!girlpic** - присылает картинку с полуголой бабищей(nsfw)\n**!memepic** - присылает english meme**\n!weather** + **город** = погода в этом городе\n**!what** + **слово** = определение этого слова'
 
 	embed = discord.Embed(title='Список команд для использования бота', description=description, colour=discord.Colour.green())
 	await author.send(embed=embed)
