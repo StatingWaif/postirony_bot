@@ -158,9 +158,9 @@ async def girlpic(ctx):
 		if ctx.channel.is_nsfw() == True:
 			await pickingVkPic(ctx, 'https://vk.com/album-43234662_00')
 		else:
-			await ctx.send('Канал должен быть **nsfw**  ¯\_(ツ)_/¯')
+			await ctx.send('Канал должен быть **NSFW**  ¯\_(ツ)_/¯')
 	except AttributeError:
-		await ctx.send('Используйте эту команду только в **nsfw** канале')
+		await ctx.send('Используйте эту команду только в **NSFW** канале')
 @client.command()
 async def memepic(ctx):
 	await pickingVkPic(ctx, 'https://vk.com/album-150550417_00')
@@ -204,7 +204,7 @@ async def weather(ctx, city):
 @client.command()
 async def help(ctx):
 	author = ctx.message.author
-	description='**!hello** - поздороваться с ботом\n**!postpic** - присылает постироничную картинку\n**!papapic** - присылает несмешную картинку с папичем\n**!girlpic** - присылает картинку с полуголой бабищей(**nsfw**)\n**!memepic** - присылает english meme**\n!weather** + **город** = погода в этом городе\n**!what** + **слово** = определение этого слова'
+	description='**!hello** - поздороваться с ботом\n**!postpic** - присылает постироничную картинку\n**!papapic** - присылает несмешную картинку с папичем\n**!girlpic** - присылает картинку с полуголой бабищей(**NSFW**)\n**!memepic** - присылает english meme**\n!weather** + **город** = погода в этом городе\n**!what** + **слово** = определение этого слова'
 
 	embed = discord.Embed(title='Список команд для использования бота', description=description, colour=discord.Colour.green())
 	await author.send(embed=embed)
