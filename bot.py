@@ -154,10 +154,10 @@ async def papapic(ctx):
 	
 @client.command(brief='Присылает полуголую бабищу', description='Присылает картинку с полуголой женщиной')
 async def girlpic(ctx):
-    if ctx.channel.is_nsfw() == True:
-	    await pickingVkPic(ctx, 'https://vk.com/album-43234662_00')
-    else:
-        await ctx.send('Канал должен быть **nsfw**  ¯\_(ツ)_/¯')
+	if ctx.channel.is_nsfw() == True:
+		await pickingVkPic(ctx, 'https://vk.com/album-43234662_00')
+	else:
+		await ctx.send('Канал должен быть **nsfw**  ¯\_(ツ)_/¯')
 @client.command()
 async def memepic(ctx):
 	await pickingVkPic(ctx, 'https://vk.com/album-150550417_00')
