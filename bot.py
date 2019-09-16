@@ -160,7 +160,7 @@ async def girlpic(ctx):
 		else:
 			await ctx.send('Канал должен быть **nsfw**  ¯\_(ツ)_/¯')
 	except AttributeError:
-		ctx.send('Используйте эту команду только в **nsfw** канале')
+		await ctx.send('Используйте эту команду только в **nsfw** канале')
 @client.command()
 async def memepic(ctx):
 	await pickingVkPic(ctx, 'https://vk.com/album-150550417_00')
