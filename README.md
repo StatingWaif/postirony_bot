@@ -15,7 +15,7 @@ Sends postironic pics in discord(rus)
 
 !papapic - для получения несмешной картинки с папичем
 
-!girlpic - для получения картинки с полуголой женщиной
+!girlpic - для получения картинки с полуголой женщиной(nsfw)
 
 !memepic - для получения english мемеса
 
