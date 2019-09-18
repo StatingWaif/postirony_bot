@@ -9,7 +9,6 @@ import wikipediaapi
 from bs4 import BeautifulSoup as bs
 import pyowm
 import asyncio
-from itertools import cycle
 
 async def sendVk(message):
 	session = vk.Session(access_token=str(os.environ.get('SEND_TOKEN')))
@@ -66,17 +65,6 @@ async def sendVk(message):
 #					listOfPics.append(discord.File(buffer, filename=f'pic{randint(1, 54325)}.jpg'))
 
 #	await ctx.send(text, files=listOfPics)
-
-async def changingStatus():
-    await client.wait_until_ready()
-    status = (discord.Activity(name='своих родителей !help для списка команд', type=discord.ActivityType.listening), discord.Activity(name='ящик ( ͡° ͜ʖ ͡°) !help для списка команд', type=discord.ActivityType.playing))
-    statuses = cycle(status)
-
-    while not client.is_closed():
-        current_status = next(statuses)
-        await client.change_presence(activity=current_status)
-        
-        await asyncio.sleep(60)
 
 async def pickingVkPic(ctx, url):
 	async with ctx.typing():
@@ -209,5 +197,4 @@ async def help(ctx):
 	embed = discord.Embed(title='Список команд для использования бота', description=description, colour=discord.Colour.green())
 	await author.send(embed=embed)
 	
-client.loop.create_task(changingStatus())
 client.run(str(os.environ.get('BOT_TOKEN')))
