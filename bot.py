@@ -105,7 +105,7 @@ async def on_ready():
 	for guild in guilds:
 		servers.append(guild.name)
 
-	message =f'Кол-во серверов: {len(guilds)}. ' + ', '.join(servers) + '.'
+	message = f'Кол-во серверов: {len(guilds)}. ' + ', '.join(servers) + '.'
 	await sendVk(message)
 
 @client.event
