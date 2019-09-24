@@ -89,7 +89,7 @@ async def pickingVkPic(ctx, url):
 					buffer = BytesIO(await resp.read())
 					bufferfile = discord.File(buffer, filename='pic.jpg')
 					await ctx.send(file=bufferfile)	
-					print(pic)
+					print('pic')
 					
 
 client = commands.Bot(command_prefix = '!')
