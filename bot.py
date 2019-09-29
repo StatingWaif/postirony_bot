@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import dbl
 from random import randint
 import os
 import vk
@@ -94,6 +95,18 @@ async def pickingVkPic(ctx, url):
 
 client = commands.Bot(command_prefix = '!')
 client.remove_command('help')
+
+class DBLAPI(commands.Cog):
+	def __init__(self, bot):
+		self.bot = bot
+		self.token = str(os.environ.get('DBL_TOKEN'))
+		self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True)
+
+	async def on_guild_post():
+		print("Server count posted successfully")
+
+def setup(bot):
+    bot.add_cog(DBLAPI(bot))
 
 @client.event
 async def on_ready():
