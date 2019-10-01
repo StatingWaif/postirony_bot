@@ -10,7 +10,6 @@ import wikipediaapi
 from bs4 import BeautifulSoup as bs
 import pyowm
 import asyncio
-import logging
 
 async def sendVk(message):
 	session = vk.Session(access_token=str(os.environ.get('SEND_TOKEN')))
@@ -119,18 +118,16 @@ class DiscordBotsOrgAPI(commands.Cog):
 
 	async def update_stats(self):
 		while not self.bot.is_closed():
-			logger.info('Attempting to post server count')
+			print('Attempting to post server count')
 			try:
 				await self.dblpy.post_guild_count()
-				logger.info('Posted server count ({})'.format(self.dblpy.guild_count()))
+				print('Posted server count ({})'.format(self.dblpy.guild_count()))
 			except Exception as e:
-				logger.exception('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
+				print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
 			await asyncio.sleep(1800)
 
 def setup(bot):
-    global logger
-    logger = logging.getLogger('bot')
-    bot.add_cog(DiscordBotsOrgAPI(bot))
+	bot.add_cog(DiscordBotsOrgAPI(bot))
 
 setup(client)
 
