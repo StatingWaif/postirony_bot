@@ -114,7 +114,7 @@ class DiscordBotsOrgAPI(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self.token = str(os.environ.get('DBL_TOKEN'))
-		self.dblpy = dbl.Client(self.bot, self.token)
+		self.dblpy = dbl.client(self.bot, self.token)
 		self.updating = self.bot.loop.create_task(self.update_stats())
 
 	async def update_stats(self):
@@ -145,7 +145,7 @@ async def on_ready():
 	for guild in guilds:
 		servers.append(guild.name)
 
-	message = f'Кол-во серверов: {len(guilds)}. ' + ', '.join(servers) + '.'
+	message = f'Кол-во серверов: {len(guilds)}. \n' + ', '.join(servers) + '.'
 	await sendVk(message)
 
 @client.event
