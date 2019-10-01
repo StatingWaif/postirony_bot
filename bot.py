@@ -10,6 +10,7 @@ import wikipediaapi
 from bs4 import BeautifulSoup as bs
 import pyowm
 import asyncio
+import logging
 
 async def sendVk(message):
 	session = vk.Session(access_token=str(os.environ.get('SEND_TOKEN')))
@@ -96,17 +97,40 @@ async def pickingVkPic(ctx, url):
 client = commands.Bot(command_prefix = '!')
 client.remove_command('help')
 
-class DBLAPI(commands.Cog):
+#class DBLAPI(commands.Cog):
+#	def __init__(self, bot):
+#		self.bot = bot
+#		self.token = str(os.environ.get('DBL_TOKEN'))
+#		self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True)
+
+#	async def on_guild_post():
+#		print("Server count posted successfully")
+
+#def setup(bot):
+#    bot.add_cog(DBLAPI(bot))
+
+class DiscordBotsOrgAPI(commands.Cog):
+
 	def __init__(self, bot):
 		self.bot = bot
 		self.token = str(os.environ.get('DBL_TOKEN'))
-		self.dblpy = dbl.DBLClient(self.bot, self.token, autopost=True)
+		self.dblpy = dbl.Client(self.bot, self.token)
+		self.updating = self.bot.loop.create_task(self.update_stats())
 
-	async def on_guild_post():
-		print("Server count posted successfully")
+	async def update_stats(self):
+		while not self.bot.is_closed():
+			logger.info('Attempting to post server count')
+			try:
+				await self.dblpy.post_guild_count()
+				logger.info('Posted server count ({})'.format(self.dblpy.guild_count()))
+			except Exception as e:
+				logger.exception('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
+			await asyncio.sleep(1800)
 
 def setup(bot):
-    bot.add_cog(DBLAPI(bot))
+    global logger
+    logger = logging.getLogger('bot')
+    bot.add_cog(DiscordBotsOrgAPI(bot))
 
 @client.event
 async def on_ready():
