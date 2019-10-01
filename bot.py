@@ -132,6 +132,8 @@ def setup(bot):
     logger = logging.getLogger('bot')
     bot.add_cog(DiscordBotsOrgAPI(bot))
 
+setup(client)
+
 @client.event
 async def on_ready():
 	print('bot is ready')
