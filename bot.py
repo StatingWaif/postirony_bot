@@ -29,14 +29,10 @@ async def pickingVkPic(ctx, url):
 		pic = randint(0, num_of_photos - 1)
 
 		directory = owner_id.replace('-', '')
-		try:
-			with open(f'blacklist/{directory}.txt') as blacklist:
-
-				while str(pic) in blacklist.read():
-					pic = randint(0, num_of_photos - 1)
-		except discord.ext.commands.errors.CommandInvokeError:
-			pass
-
+		with open(f'blacklist/{directory}.txt', 'rw') as blacklist:
+			while str(pic) in blacklist.read():
+				pic = randint(0, num_of_photos - 1)
+			
 			offset = pic - (pic % 1000)
 			photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
 
