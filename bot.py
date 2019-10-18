@@ -34,6 +34,8 @@ async def pickingVkPic(ctx, url):
 
 				while str(pic) in blacklist.read():
 					pic = randint(0, num_of_photos - 1)
+		except discord.ext.commands.errors.CommandInvokeError:
+			pass
 
 			offset = pic - (pic % 1000)
 			photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
@@ -50,8 +52,7 @@ async def pickingVkPic(ctx, url):
 						bufferfile = discord.File(buffer, filename=f'{owner_id}_{pic}.jpg')
 						await ctx.send(file=bufferfile)	
 						print(pic)
-		except discord.ext.commands.errors.CommandInvokeError:
-			pass
+
 client = commands.Bot(command_prefix = '!')
 client.remove_command('help')
 
