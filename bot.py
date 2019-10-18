@@ -28,6 +28,13 @@ async def pickingVkPic(ctx, url):
 
 		pic = randint(0, num_of_photos - 1)
 
+		directory = owner_id.replace('-', '')
+
+		with open(f'blacklist/{directory}.txt') as blacklist:
+
+			while str(pic) in blacklist.read():
+				pic = randint(0, num_of_photos - 1)
+
 		offset = pic - (pic % 1000)
 		photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
 
@@ -37,9 +44,12 @@ async def pickingVkPic(ctx, url):
 			async with session.get(photo) as resp:
 				if resp.status == 200:
 					buffer = BytesIO(await resp.read())
-					bufferfile = discord.File(buffer, filename='pic.jpg')
+
+					owner_id = owner_id.replace('-', '')
+
+					bufferfile = discord.File(buffer, filename=f'{owner_id}_{pic}.jpg')
 					await ctx.send(file=bufferfile)	
-					print('pic')
+					print(pic)
 					
 
 client = commands.Bot(command_prefix = '!')
@@ -122,6 +132,10 @@ async def postpic(ctx):
 @client.command(aliases=['папич', 'papichpic'], brief='Присылает мем с папичем', descripiton='Полное описание для малолетних дебилов')
 async def papapic(ctx):
 	await pickingVkPic(ctx, 'https://vk.com/album-181404250_00')
+
+@client.command()
+async def musicpic(ctx):
+	await pickingVkPic(ctx, 'https://vk.com/album-187034124_00')
 	
 @client.command(brief='Присылает полуголую бабищу', description='Присылает картинку с полуголой женщиной')
 async def girlpic(ctx):
@@ -167,6 +181,21 @@ async def weather(ctx, city):
 	windSpeed = w.get_wind()['speed']
 
 	await ctx.send(f'Место: {city}\nТемпература: {temp}°\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
+
+@client.command()
+async def blacklisted(ctx):
+	if ctx.message.author.discriminator == '3191' and ctx.message.author.name == 'StatingWaif':
+		channel = ctx.message.channel
+		async for message in channel.history(limit=5):
+			if message.author.discriminator == '2560' and message.author.bot == True and message.author.name == 'Постироничная шелупонь':
+				file_name = message.attachments[0].filename
+				group = file_name.split('_')[0]
+				pic_num = file_name.split('_')[1].replace('.jpg', '')
+
+				with open (f'blacklist/{group}.txt', 'a+') as tf:
+					if not pic_num in tf.read():
+						tf.write(pic_num + '\n')
+						break
 
 @client.command()
 async def help(ctx):
