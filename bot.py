@@ -192,6 +192,7 @@ async def blacklisted(ctx):
 				with open (f'blacklist/{group}.txt', 'a+') as tf:
 					if not pic_num in tf.read():
 						tf.write(pic_num + '\n')
+						print('blacklisted')
 						break
 
 @client.command()
