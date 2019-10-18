@@ -29,7 +29,7 @@ async def pickingVkPic(ctx, url):
 		pic = randint(0, num_of_photos - 1)
 
 		directory = owner_id.replace('-', '')
-		with open(f'blacklist/{directory}.txt', 'rw') as blacklist:
+		with open(f'blacklist/{directory}.txt', 'a+') as blacklist:
 			while str(pic) in blacklist.read():
 				pic = randint(0, num_of_photos - 1)
 			
