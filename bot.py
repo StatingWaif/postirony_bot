@@ -50,6 +50,8 @@ async def pickingVkPic(ctx, url):
 						bufferfile = discord.File(buffer, filename=f'{owner_id}_{pic}.jpg')
 						await ctx.send(file=bufferfile)	
 						print(pic)
+		except discord.ext.commands.errors.CommandInvokeError:
+			pass
 					
 
 client = commands.Bot(command_prefix = '!')
