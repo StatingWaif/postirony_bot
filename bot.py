@@ -52,8 +52,6 @@ async def pickingVkPic(ctx, url):
 						print(pic)
 		except discord.ext.commands.errors.CommandInvokeError:
 			pass
-					
-
 client = commands.Bot(command_prefix = '!')
 client.remove_command('help')
 
