@@ -29,27 +29,27 @@ async def pickingVkPic(ctx, url):
 		pic = randint(0, num_of_photos - 1)
 
 		directory = owner_id.replace('-', '')
+		try:
+			with open(f'blacklist/{directory}.txt') as blacklist:
 
-		with open(f'blacklist/{directory}.txt') as blacklist:
+				while str(pic) in blacklist.read():
+					pic = randint(0, num_of_photos - 1)
 
-			while str(pic) in blacklist.read():
-				pic = randint(0, num_of_photos - 1)
+			offset = pic - (pic % 1000)
+			photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
 
-		offset = pic - (pic % 1000)
-		photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
+			photo = photos['items'][pic - offset]['sizes'][-1]['src']
 
-		photo = photos['items'][pic - offset]['sizes'][-1]['src']
+			async with aiohttp.ClientSession() as session:
+				async with session.get(photo) as resp:
+					if resp.status == 200:
+						buffer = BytesIO(await resp.read())
 
-		async with aiohttp.ClientSession() as session:
-			async with session.get(photo) as resp:
-				if resp.status == 200:
-					buffer = BytesIO(await resp.read())
+						owner_id = owner_id.replace('-', '')
 
-					owner_id = owner_id.replace('-', '')
-
-					bufferfile = discord.File(buffer, filename=f'{owner_id}_{pic}.jpg')
-					await ctx.send(file=bufferfile)	
-					print(pic)
+						bufferfile = discord.File(buffer, filename=f'{owner_id}_{pic}.jpg')
+						await ctx.send(file=bufferfile)	
+						print(pic)
 					
 
 client = commands.Bot(command_prefix = '!')
