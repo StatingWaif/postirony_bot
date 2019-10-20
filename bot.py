@@ -226,7 +226,7 @@ async def weather(ctx, city):
 
 @client.command()
 async def blacklist(ctx):
-	if ctx.message.author.discriminator == '3191' and ctx.message.author.name == 'StatingWaif':
+	if (ctx.message.author.discriminator == '3191' and ctx.message.author.name == 'StatingWaif') or (ctx.message.author.discriminator == '2726' and ctx.message.author.name == 'Rendei<3'):
 		channel = ctx.message.channel
 
 		async for message in channel.history(limit=5):
