@@ -10,6 +10,44 @@ import wikipediaapi
 from bs4 import BeautifulSoup as bs
 import pyowm
 import asyncio
+import mysql.connector
+
+class db:
+	def __init__(self):
+		original = str(os.environ.get('CLEARDB_DATABASE_URL')).replace('mysql://', '').replace('?reconnect=true', '')
+		self.database = original.split('/')[-1]
+		self.host = original.split('@')[-1].replace('/' + self.database, '')
+		self.user = original.split(':')[0]
+		self.passwd = original.split('@')[0].replace(self.user + ':', '')
+
+		self.mydb = mysql.connector.connect(
+			host=self.host,
+			user=self.user,
+			passwd=self.passwd,
+			database=self.database,
+			buffered=True
+			)
+
+	async def getInDataBase(self, group, pic):
+		mycursor = self.mydb.cursor()
+		try:
+			mycursor.execute(f'INSERT INTO group_{group} VALUE ({pic})')
+		except mysql.connector.errors.ProgrammingError:
+			mycursor.execute(f"CREATE TABLE group_{group} (pic INTEGER(10))")
+			mycursor.execute(f'INSERT INTO group_{group} VALUE ({pic})')
+		self.mydb.commit()
+
+	async def isInBase(self, group, pic):
+		mycursor = self.mydb.cursor()
+		listOfValues = []
+		mycursor.execute(f'SELECT * FROM group_{group}')
+		for value in mycursor:
+			listOfValues.append(value[0])
+		
+		if pic in listOfValues:
+			return True
+		else:
+			return False
 
 async def sendVk(message):
 	session = vk.Session(access_token=str(os.environ.get('SEND_TOKEN')))
@@ -28,26 +66,33 @@ async def pickingVkPic(ctx, url):
 
 		pic = randint(0, num_of_photos - 1)
 
-		directory = owner_id.replace('-', '')
-		with open(f'blacklist/{directory}.txt', 'a+') as blacklist:
-			while str(pic) in blacklist.read():
-				pic = randint(0, num_of_photos - 1)
+		dBase = db()
+
+		mycursor = dBase.mydb.cursor()
+		group = owner_id.replace('-', '')
+
+		try:
+			mycursor.execute(f'SELECT * FROM group_{group}')
+		except mysql.connector.errors.ProgrammingError:
+			mycursor.execute(f'CREATE TABLE group_{group} (pic INTEGER(10))')
+
+		while await dBase.isInBase(group, pic):
+			pic = randint(0, num_of_photos - 1)
 			
-			offset = pic - (pic % 1000)
-			photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
+		offset = pic - (pic % 1000)
+		photos = vk_api.photos.get(owner_id=owner_id, album_id='wall', rev=0, count=1000, photo_sizes=1, offset=offset)
 
-			photo = photos['items'][pic - offset]['sizes'][-1]['src']
+		photo = photos['items'][pic - offset]['sizes'][-1]['src']
 
-			async with aiohttp.ClientSession() as session:
-				async with session.get(photo) as resp:
-					if resp.status == 200:
-						buffer = BytesIO(await resp.read())
+		async with aiohttp.ClientSession() as session:
+			async with session.get(photo) as resp:
+				if resp.status == 200:
+					buffer = BytesIO(await resp.read())
+					group = owner_id.replace('-', '')
 
-						owner_id = owner_id.replace('-', '')
-
-						bufferfile = discord.File(buffer, filename=f'{owner_id}_{pic}.jpg')
-						await ctx.send(file=bufferfile)	
-						print(pic)
+					bufferfile = discord.File(buffer, filename=f'{group}_{pic}.jpg')
+					await ctx.send(file=bufferfile)	
+					print(pic)
 
 client = commands.Bot(command_prefix = '!')
 client.remove_command('help')
@@ -180,20 +225,20 @@ async def weather(ctx, city):
 	await ctx.send(f'Место: {city}\nТемпература: {temp}°\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
 
 @client.command()
-async def blacklisted(ctx):
+async def blacklist(ctx):
 	if ctx.message.author.discriminator == '3191' and ctx.message.author.name == 'StatingWaif':
 		channel = ctx.message.channel
+
 		async for message in channel.history(limit=5):
 			if message.author.discriminator == '2560' and message.author.bot == True and message.author.name == 'Постироничная шелупонь':
 				file_name = message.attachments[0].filename
 				group = file_name.split('_')[0]
 				pic_num = file_name.split('_')[1].replace('.jpg', '')
 
-				with open (f'blacklist/{group}.txt', 'a+') as tf:
-					if not pic_num in tf.read():
-						tf.write(pic_num + '\n')
-						print('blacklisted')
-						break
+				dBase = db()
+
+				await dBase.getInDataBase(group, pic_num)
+				break
 
 @client.command()
 async def help(ctx):
