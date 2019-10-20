@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import dbl
-from random import randint
+from random import randint, choice
 import os
 import vk
 import aiohttp
@@ -239,6 +239,9 @@ async def blacklist(ctx):
 
 				await dBase.getInDataBase(group, pic_num)
 				break
+		animals = [':gorilla:', ':dog:', ':pig:', ':cow:', ':koala:', ':frog:', ':boar:', ':monkey_face:', ':panda_face:']
+		await ctx.send(f'Ваше пожелание будет исполнено{choice(animals)} ')
+		print('blacklisted')
 
 @client.command()
 async def help(ctx):
