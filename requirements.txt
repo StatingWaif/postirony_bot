@@ -6,4 +6,4 @@ beautifulsoup4
 wikipedia-api
 pyowm
 dblpy
-mysql.connector
+mysql-connector-python
