@@ -3,7 +3,7 @@ Sends postironic pics in discord(rus)
 
 Бот предназначен для русских пользователей дискорда.
 По команде бот отправляет рандомную постироничную картинку и не только постироничную.
-Картинки берутся из пабликов вк: memnij, inet_post, ukrpostironiya, agrironia, kind_post, homepost, devkironiya,   papicheveryday, geekgirls, reddit. Возможно, список будет пополняться.
+Картинки берутся из пабликов вк: memnij, inet_post, agrironia, kind_post, homepost, devkironiya,   papicheveryday, geekgirls, reddit. Возможно, список будет пополняться.
 
 Часть списка команд:
 

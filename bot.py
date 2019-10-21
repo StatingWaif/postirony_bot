@@ -176,10 +176,6 @@ async def schoolpic(ctx):
 	await pickingVkPic(ctx, 'https://vk.com/album-185340181_00')
 
 @client.command()
-async def ukrpic(ctx):
-	await pickingVkPic(ctx, 'https://vk.com/album-177547320_00')
-
-@client.command()
 async def agrpic(ctx):
 	await pickingVkPic(ctx, 'https://vk.com/album-184764992_00')
 
@@ -271,8 +267,7 @@ async def help(ctx):
 	**!rompic** - романтичная картинка для общения с дамами \n \
 	**!agrpic** - агрессивная картинка \n \
 	**!schoolpic** - школьная картинка \n \
-	**!villpic** - деревенская картинка \n \
-	**!ukrpic** - украинская картинка'
+	**!villpic** - деревенская картинка \n'
 
 	otherValue = '**!memepic** - english meme\n \
 	**!papapic** - несмешная картинка с папичем\n \
