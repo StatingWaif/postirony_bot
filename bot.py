@@ -169,15 +169,35 @@ async def hello(ctx):
 
 @client.command(aliases=['постироничная_картинка'], brief='Присылает постироничную картинку', description='Ты тупой? Зачем тебе полное описание? Ты не понял, что было написано в команде !help? Ты идиот? Я тебя спрашиваю')
 async def postpic(ctx):
-	await pickingVkPic(ctx, 'https://vk.com/album-162305728_00')	
+	await pickingVkPic(ctx, 'https://vk.com/album-162305728_00')
+	
+@client.command()
+async def schoolpic(ctx):
+	await pickingVkPic(ctx, 'https://vk.com/album-185340181_00')
+
+@client.command()
+async def ukrpic(ctx):
+	await pickingVkPic(ctx, 'https://vk.com/album-177547320_00')
+
+@client.command()
+async def agrpic(ctx):
+	await pickingVkPic(ctx, 'https://vk.com/album-184764992_00')
+
+@client.command()
+async def kindpic(ctx):
+	await pickingVkPic(ctx, 'https://vk.com/album-184003532_00')
+
+@client.command()
+async def villpic(ctx):
+	await pickingVkPic(ctx, 'https://vk.com/album-186137194_00')
+
+@client.command()
+async def rompic(ctx):
+	await pickingVkPic(ctx, 'https://vk.com/album-184394012_00')
 		
 @client.command(aliases=['папич', 'papichpic'], brief='Присылает мем с папичем', descripiton='Полное описание для малолетних дебилов')
 async def papapic(ctx):
 	await pickingVkPic(ctx, 'https://vk.com/album-181404250_00')
-
-@client.command()
-async def musicpic(ctx):
-	await pickingVkPic(ctx, 'https://vk.com/album-187034124_00')
 	
 @client.command(brief='Присылает полуголую бабищу', description='Присылает картинку с полуголой женщиной')
 async def girlpic(ctx):
@@ -245,10 +265,27 @@ async def blacklist(ctx):
 
 @client.command()
 async def help(ctx):
-	author = ctx.message.author
-	description='**!hello** - поздороваться с ботом\n**!postpic** - присылает постироничную картинку\n**!papapic** - присылает несмешную картинку с папичем\n**!girlpic** - присылает картинку с полуголой бабищей(**NSFW**)\n**!memepic** - присылает english meme**\n!weather** + **город** = погода в этом городе\n**!what** + **слово** = определение этого слова'
+	embed = discord.Embed(title='Список команд для использования бота', colour=discord.Colour.green())
+	postValue = '**!postpic** - классическая картинка\n \
+	**!kindpic** - добрая картинка \n \
+	**!rompic** - романтичная картинка для общения с дамами \n \
+	**!agrpic** - агрессивная картинка \n \
+	**!schoolpic** - школьная картинка \n \
+	**!villpic** - деревенская картинка \n \
+	**!ukrpic** - украинская картинка'
 
-	embed = discord.Embed(title='Список команд для использования бота', description=description, colour=discord.Colour.green())
-	await author.send(embed=embed)
+	otherValue = '**!memepic** - english meme\n \
+	**!papapic** - несмешная картинка с папичем\n \
+	**!girlpic** - картинка с полуголой женщиной(**NSFW**)'
+
+	notPicValue = '**!help** - список команд \n \
+	**!hello** - поздороваться с ботом\n \
+	**!weather** + **город** = погода в этом городе\n \
+	**!what** + **слово** = определение этого слова'
+
+	embed.add_field(name='Команды для постироничных картинок:', value=postValue)
+	embed.add_field(name='Команды для других картинок:', value = otherValue)
+	embed.add_field(name='Остальные команды:', value=notPicValue)
+	await ctx.send(embed=embed)
 	
 client.run(str(os.environ.get('BOT_TOKEN')))
