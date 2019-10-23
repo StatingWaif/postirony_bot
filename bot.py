@@ -140,25 +140,7 @@ async def on_member_join(member):
 
 @client.event
 async def on_member_remove(member):
-    try:
-        print(f'{member} вышел с сервера')
-        nameOfMember = member.nick
-        if nameOfMember == None:
-            nameOfMember = member
-        leftMessage = f'**{nameOfMember} вышел с сервера :cry:**'
-        textChannels = member.guild.text_channels
-
-        if len(textChannels) == 1:
-            await textChannels[0].send(leftMessage)
-        elif len(textChannels) > 1:
-            channel = discord.utils.get(textChannels, name='основной')
-            if channel == None:
-                channel = discord.utils.get(textChannels, name='general')
-                if channel == None:
-                    channel = textChannels[0]
-            await channel.send(leftMessage)
-    except discord.errors.Forbidden:
-        print('remove forbidden')
+    print(f'{member} вышел с сервера {member.guild.name} ')
 
 @client.command(brief='Мягко указывает на то, что ты немного ошибаешься при приветствии', description='Тебе совсем нечем заняться? Просто используй команду. Зачем смотреть её полное описание... Дурак ржавый..')
 async def hello(ctx):
