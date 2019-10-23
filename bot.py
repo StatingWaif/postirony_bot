@@ -136,7 +136,7 @@ async def on_ready():
 
 @client.event
 async def on_member_join(member):
-	print(f'{member} зашел на сервер')
+	print(f'{member} зашел на сервер {member.guild.name}')
 
 @client.event
 async def on_member_remove(member):
