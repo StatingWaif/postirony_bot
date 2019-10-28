@@ -244,21 +244,27 @@ async def blacklist(ctx):
 @client.command()
 async def help(ctx):
 	embed = discord.Embed(title='Список команд для использования бота', colour=discord.Colour.green())
-	postValue = '**!postpic** - классическая картинка\n \
+	postValue = '\
+	**!postpic** - классическая картинка\n \
 	**!kindpic** - добрая картинка \n \
 	**!rompic** - романтичная картинка для общения с дамами \n \
 	**!agrpic** - агрессивная картинка \n \
 	**!schoolpic** - школьная картинка \n \
-	**!villpic** - деревенская картинка \n'
+	**!villpic** - деревенская картинка \n \
+	'
 
-	otherValue = '**!memepic** - english meme\n \
+	otherValue = '\
+	**!memepic** - english meme\n \
 	**!papapic** - несмешная картинка с папичем\n \
-	**!girlpic** - картинка с полуголой женщиной(**NSFW**)'
+	**!girlpic** - картинка с полуголой женщиной(**NSFW**) \
+	'
 
-	notPicValue = '**!help** - список команд \n \
+	notPicValue = '\
+	**!help** - список команд \n \
 	**!hello** - поздороваться с ботом\n \
 	**!weather** + **город** = погода в этом городе\n \
-	**!what** + **слово** = определение этого слова'
+	**!what** + **слово** = определение этого слова \
+	'
 
 	embed.add_field(name='Команды для постироничных картинок:', value=postValue)
 	embed.add_field(name='Команды для других картинок:', value = otherValue)
