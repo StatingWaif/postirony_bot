@@ -142,6 +142,14 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f'{member} вышел с сервера {member.guild.name} ')
 
+@client.event
+async def on_guild_join(guild):
+	print(f'Теперь ещё и {guild.name}')
+
+@client.event
+async def on_guild_remove(guild):
+	print(f'Прощай, {guild.name}')
+
 @client.command(brief='Мягко указывает на то, что ты немного ошибаешься при приветствии', description='Тебе совсем нечем заняться? Просто используй команду. Зачем смотреть её полное описание... Дурак ржавый..')
 async def hello(ctx):
 	async with ctx.typing():
