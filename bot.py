@@ -184,6 +184,10 @@ async def rompic(ctx):
 @client.command(aliases=['папич', 'papichpic'], brief='Присылает мем с папичем', descripiton='Полное описание для малолетних дебилов')
 async def papapic(ctx):
 	await pickingVkPic(ctx, 'https://vk.com/album-181404250_00')
+
+@client.command()
+async def gachipic(ctx):
+	await pickingVkPic(ctx, 'https://vk.com/album-73192688_00')
 	
 @client.command(brief='Присылает полуголую бабищу', description='Присылает картинку с полуголой женщиной')
 async def girlpic(ctx):
@@ -262,6 +266,7 @@ async def help(ctx):
 	'
 
 	otherValue = '\
+	**!gachipic** - гачимучи картинка \
 	**!memepic** - english meme\n \
 	**!papapic** - несмешная картинка с папичем\n \
 	**!girlpic** - картинка с полуголой женщиной(**NSFW**) \
