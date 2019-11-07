@@ -266,7 +266,7 @@ async def help(ctx):
 	'
 
 	otherValue = '\
-	**!gachipic** - гачимучи картинка \
+	**!gachipic** - гачимучи картинка\n \
 	**!memepic** - english meme\n \
 	**!papapic** - несмешная картинка с папичем\n \
 	**!girlpic** - картинка с полуголой женщиной(**NSFW**) \
