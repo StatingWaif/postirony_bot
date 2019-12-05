@@ -12,6 +12,8 @@ import pyowm
 import asyncio
 import mysql.connector
 
+border = '------------------------------------------'
+
 class db:
 	def __init__(self):
 		original = str(os.environ.get('CLEARDB_DATABASE_URL')).replace('mysql://', '').replace('?reconnect=true', '')
@@ -107,6 +109,7 @@ class DiscordBotsOrgAPI(commands.Cog):
 
 	async def update_stats(self):
 		while not self.bot.is_closed():
+			print(border)
 			print('Attempting to post server count')
 			try:
 				await self.dblpy.post_guild_count()
@@ -114,6 +117,7 @@ class DiscordBotsOrgAPI(commands.Cog):
 			except Exception as e:
 				print('Failed to post server count\n{}: {}'.format(type(e).__name__, e))
 			await asyncio.sleep(1800)
+			print(border)
 
 def setup(bot):
 	bot.add_cog(DiscordBotsOrgAPI(bot))
@@ -133,6 +137,7 @@ async def on_ready():
 
 	message = f'Кол-во серверов: {len(guilds)}. \n' + ', '.join(servers) + '.'
 	await sendVk(message)
+	print(border)
 
 @client.event
 async def on_member_join(member):
@@ -144,11 +149,15 @@ async def on_member_remove(member):
 
 @client.event
 async def on_guild_join(guild):
+	print(border)
 	print(f'Теперь ещё и {guild.name}')
+	print(border)
 
 @client.event
 async def on_guild_remove(guild):
+	print(border)
 	print(f'Прощай, {guild.name}')
+	print(border)
 
 @client.command(brief='Мягко указывает на то, что ты немного ошибаешься при приветствии', description='Тебе совсем нечем заняться? Просто используй команду. Зачем смотреть её полное описание... Дурак ржавый..')
 async def hello(ctx):
@@ -232,7 +241,13 @@ async def weather(ctx, city):
 	status = w.get_detailed_status()
 	windSpeed = w.get_wind()['speed']
 
-	await ctx.send(f'Место: {city}\nТемпература: {temp}°\nСтатус: {status}\nСкорость ветра: {windSpeed} м/с')
+	description = f'Температура: {temp}° \n \
+	Статус: {status} \n \
+	Скорость ветра: {windSpeed} м/с'
+
+	embed = discord.Embed(title=city, colour=discord.Colour.green(), description=description)
+
+	await ctx.send(embed=embed)
 
 @client.command()
 async def blacklist(ctx):
