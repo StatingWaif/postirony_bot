@@ -108,8 +108,9 @@ class DiscordBotsOrgAPI(commands.Cog):
 		self.updating = self.bot.loop.create_task(self.update_stats())
 
 	async def update_stats(self):
+		print(border)
 		while not self.bot.is_closed():
-			print(border)
+			
 			print('Attempting to post server count')
 			try:
 				await self.dblpy.post_guild_count()
